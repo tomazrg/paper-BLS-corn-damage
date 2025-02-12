@@ -10,10 +10,6 @@ website:
         text: "<i class='bi bi-book-half'></i> About"
       - href: about.qmd
         text: "<i class='bi bi-bar-chart-fill'></i> Data Analysis"
-   right:
-      - icon: linkedin
-        href: "https://www.linkedin.com/in/ricardo-gomes-tom%C3%A1z-0137ba189/"
-        target: _blank  # Abre o LinkedIn em uma nova aba
 
 format:
   html:
