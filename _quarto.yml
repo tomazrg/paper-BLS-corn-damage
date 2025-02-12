@@ -13,6 +13,8 @@ website:
     right:
       - href: https://github.com/tomazrg/paper-BLS-corn-damage
         text: "<i class='bi bi-github'></i> GitHub"
+      - href: https://www.linkedin.com/in/ricardo-gomes-tom%C3%A1z-0137ba189/
+        text: "<i class='bi bi-linkedin'></i> Linkedin"
 
 format:
   html:
