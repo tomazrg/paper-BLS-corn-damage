@@ -1,16 +1,16 @@
 project:
   type: website
   output-dir: docs
-  
+
 website:
   title: "Modeling BLS damage"
   navbar:
     left:
       - href: index.qmd
-        text: About
+        text: "<i class='fas fa-info-circle'></i> About"
       - href: about.qmd
-        text: "Data Analysis"
-        
+        text: "<i class='fas fa-chart-line'></i> Data Analysis"
+
 format:
   html:
     theme: Minimalist
@@ -18,4 +18,3 @@ format:
     toc: true
 
 editor: visual
-
