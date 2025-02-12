@@ -16,5 +16,10 @@ format:
     theme: flatly
     css: styles.css
     toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    lib_dir: site_libs
+    self_contained: false
 
 editor: visual
