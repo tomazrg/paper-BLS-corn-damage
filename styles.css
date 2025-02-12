@@ -43,9 +43,20 @@ h1, h2, h3 {
 
 }
 
-navbar {
+.navbar {
     min-height: 50px; /* Reduz a altura da barra */
     padding: 5px 10px; /* Ajusta o espaçamento interno */
+}
+
+.navbar-brand {
+    font-size: 18px; /* Reduz o tamanho do título na barra */
+    padding: 5px 10px;
+}
+
+.navbar-nav > li > a {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 16px; /* Ajusta o tamanho dos itens da barra */
 }
 
 .list-group-item.active {
