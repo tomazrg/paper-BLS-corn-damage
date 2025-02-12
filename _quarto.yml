@@ -10,6 +10,9 @@ website:
         text: "<i class='bi bi-book-half'></i> About"
       - href: about.qmd
         text: "<i class='bi bi-bar-chart-fill'></i> Data Analysis"
+    right:
+      - href: https://github.com/tomazrg/paper-BLS-corn-damage
+        text: "<i class='bi bi-github'></i> GitHub"
 
 format:
   html:
@@ -21,6 +24,5 @@ format:
       smooth_scroll: false
     lib_dir: site_libs
     self_contained: false
-    
 
 editor: visual

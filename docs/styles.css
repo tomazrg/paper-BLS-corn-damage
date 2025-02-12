@@ -12,6 +12,11 @@ body {
     line-height: 1.5;   /* Altura da linha */
 }
 
+img {
+ margin-top: 40px;
+ margin-bottom: 40px
+}
+
 /* Ajuste para os parágrafos */
 p {
     line-height: 1.6;
