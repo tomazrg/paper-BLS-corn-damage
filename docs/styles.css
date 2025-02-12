@@ -41,13 +41,13 @@ h1, h2, h3 {
     font-family: 'Oswald', sans-serif;
     padding-bottom: 10px;
     padding-top: 20px;
-    color: #1c1c3c;
+    color: #0c406d;
     margin-left: 5px;  /* Recuo para os títulos */
 }
 
 /* Estilo para a barra de navegação */
 .navbar-default {
-    background-color: #1c1c3c;
+    background-color: #0c406d;
 }
 
 .navbar {
@@ -66,8 +66,8 @@ h1, h2, h3 {
 .list-group-item.active {
     z-index: 2;
     color: #ffffff;
-    background-color: #1c1c3c;
-    border-color: #1c1c3c;
+    background-color: #0c406d;
+    border-color: #0c406d;
 }
 
 /* Ajustes adicionais no layout */
