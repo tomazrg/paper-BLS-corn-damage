@@ -42,7 +42,7 @@ h1, h2, h3 {
     padding-bottom: 10px;
     padding-top: 20px;
     color: #1c1c3c;
-    margin-left: 20px;  /* Recuo para os títulos */
+    margin-left: 5px;  /* Recuo para os títulos */
 }
 
 /* Estilo para a barra de navegação */
