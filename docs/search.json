@@ -88,6 +88,6 @@
     "href": "index.html",
     "title": "Modeling BLS damage",
     "section": "",
-    "text": "The dataset was obtained from four field experiments conducted under natural infection conditions of disease, being carried out in the years of 2018 and 2019 at Centro de Pesquisa Agrícola (Copacol) in Cafelândia, Paraná state, Brazil. On average, the trials experienced a mean temperature of 00°C, relative humidity of 00%, and total precipitation of 00 mm. The experimental design followed a randomized complete block structure with four replications, where each replicate consisted of four rows sown at 0.68-m spacing and extending 10 meters in length. Across the four experiments, a total of 114 different corn hybrids were evaluated."
+    "text": "This website provides easy access to commented R scripts that allows reproducing the analysis of the data from our publication.\nThe dataset was obtained from four field experiments conducted under natural infection conditions of disease, being carried out in the years of 2018 and 2019 at Centro de Pesquisa Agrícola (Copacol) in Cafelândia, Paraná state, Brazil."
   }
 ]
