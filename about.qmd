@@ -15,6 +15,7 @@ library(lme4)
 library(cowplot)
 library(readxl)
 library(writexl)
+library(ggdist)
 ```
 
 # Importation
@@ -320,7 +321,7 @@ library(lme4)
 # Fit a mixed-effects model
 obs_model_lmer <- lmer(mean_yld ~ mean_sev + (1 | trial), data = estria2)
 
-median(simulated_data_lmer$sev)
+
 # Summary of the model
 summary(obs_model_lmer)
 confint(obs_model_lmer)
@@ -505,26 +506,6 @@ lmer_plot = simulated_data_lmer|>
 
 lmer_plot
 ```
-```{r}
-simulated_data_lmer$hybrid2 <- rep(paste0("hybrid_", sprintf("%02d", 1:50)), times = 200)
-
-# Número total de linhas do dataframe
-num_linhas <- nrow(simulated_data_lmer)
-
-# Criar a sequência que repete cada "hybrid_X" 50 vezes e recicla conforme o tamanho do dataframe
-simulated_data_lmer$hybrid2 <- rep(paste0("hybrid_", sprintf("%02d", 1:50)), each = 50, length.out = num_linhas)
-
-lmer_stats <- simulated_data_lmer %>%
-  dplyr::select(experiment, yld, sev,hybrid2) %>%
-  dplyr::group_by(hybrid2) %>%
-  do({
-    model <- lmer(yld ~ sev + (1 | experiment), data = .)  # Modelo misto com efeito aleatório
-    tidy_model <- tidy(model)  # Resumo do modelo
-    confint_model <- confint(model) %>% as.data.frame()  # Intervalos de confiança
-    confint_model <- tibble::rownames_to_column(confint_model, "term")  # Ajuste os nomes das colunas
-    left_join(tidy_model, confint_model, by = "term")  # Junta os resultados
-  })
-```
 
 
 ## Joining
@@ -544,26 +525,6 @@ cor(simulated_data_lmer$sev, simulated_data_lmer$yld)
 ```
 
 # Performance
-
-## Statistic (REMOVER)
-
-```{r}
-
-sev_lmer <- lmer(mean_yld ~ mean_sev + (1 | trial) + (1 | hybrid), data = estria2)
-sev_lmer <- lmer(mean_yld ~ mean_sev + (1 | hybrid), data = estria2)
-
-
-performance::check_normality(sev_lmer)
-performance::check_heteroscedasticity(sev_lmer)
-performance::check_autocorrelation(sev_lmer)
-performance::check_model(sev_lmer)
-sim_resids <- DHARMa::simulateResiduals(fittedModel = sev_lmer)
-plot(sim_resids)
-test_resids <- DHARMa::testResiduals(sim_resids)
-print(test_resids)
-simu_model_lmer
-```
-
 
 ### Empirical
 ```{r}
@@ -827,74 +788,7 @@ ggsave("fig/lmm_residue.png", dpi = 600, bg = "white", height = 6, width = 8)
 ### Severity
 
 
-```{r}
-library(lme4)
-
-# Ajusta o modelo com os dados observados
-obs_model_lmer <- lmer(mean_yld ~ mean_sev + (1 | trial), data = estria2)
-
-# Obtém os parâmetros do modelo real
-fixed_intercept <- fixef(obs_model_lmer)[1]
-fixed_slope <- fixef(obs_model_lmer)[2]
-random_effect_sd <- sqrt(as.numeric(VarCorr(obs_model_lmer)$trial[1])) # Variância dos efeitos aleatórios
-residual_sd_obs <- sd(resid(obs_model_lmer)) # Desvio padrão dos resíduos
-
-# Número de experimentos e pontos por experimento
-num_experiments <- 1000
-points_per_experiment <- 50
-
-# Simulação dos dados
-set.seed(123)
-simulated_data_lmer <- data.frame()
-for (exp in 1:num_experiments) {
-  
-  # Simula efeito aleatório do experimento
-  u_j <- rnorm(1, mean = 0, sd = random_effect_sd)
-  
-  # Simula severidade com a mesma distribuição dos dados reais
-  sev <- sample(estria2$mean_sev, size = points_per_experiment, replace = F)
-  
-  # Simula resíduos com variância ajustada
-  residuals <- rnorm(points_per_experiment, mean = 0, sd = residual_sd_obs)
-  
-  # Calcula o rendimento
-  yld <- fixed_intercept + u_j + fixed_slope * sev + residuals
-  
-  # Armazena os dados
-  exp_data <- data.frame(experiment = paste0("Exp_", exp), sev = sev, yld = yld)
-  simulated_data_lmer <- rbind(simulated_data_lmer, exp_data)
-}
-
-# Ajusta o modelo com os dados simulados
-simu_model_lmer <- lmer(yld ~ sev + (1 | experiment), data = simulated_data_lmer)
-
-# Comparação das variâncias
-var_obs_yld <- var(estria2$mean_yld)
-var_sim_yld <- var(simulated_data_lmer$yld)
-
-cat("Variância do rendimento (observado):", var_obs_yld, "\n")
-cat("Variância do rendimento (simulado):", var_sim_yld, "\n")
-
-summary(simu_model_lmer)
-
-```
-
-
-```{r}
-library(simr)
-
-sev_lmer <- lmer(mean_yld ~ mean_sev + (1 | trial), data = estria2)
-
-ext_sev_lmer = extend(sev_lmer, along = "mean_sev", n=10000)
-
-curve_sev_lmer = powerCurve(ext_sev_lmer, along = "mean_sev", nsim = 100,breaks = 1:100)
-
-curve_sev_lmer2 = as.data.frame(summary(curve_sev_lmer))
-
-```
-
-
-```{r}
+```{r,eval = FALSE, echo = TRUE}
 library(simr)
 library(ggplot2)
 library(dplyr)
@@ -919,9 +813,13 @@ for (i in 1:num_simulations) {
 
 power_df <- bind_rows(power_results, .id = "simulation")
 
-write_xlsx(power_df, "data/power_df.xlsx")
+#write_xlsx(power_df, "data/power_df.xlsx")
 
 
+
+```
+
+```{r}
 power_df = read_xlsx("data/power_df.xlsx")
 
 
@@ -963,44 +861,6 @@ ggplot() +
        y = "Power (%)")
 
 ggsave("fig/power_model.png", bg = "white", dpi = 600,width = 6, height = 4)
-```
-## Test
-```{r}
-ma <- gsheet2tbl("https://docs.google.com/spreadsheets/d/151DE26uSMN4WBS0PTQcjdw7BO56gXy_VilFZS3b9AAM/edit?usp=sharing")
-
-molina = read_xlsx("data/molina.xlsx")
-brusone = read_xlsx("data/brusone.xlsx")
-  
-ma1 = ma %>% 
-  dplyr::select(study, cultivar, sev,yld,block,ai,state,year)
-
-molina1 = molina %>% 
-  dplyr::select(study, cultivar, sev,yield,rep,fungic,state,year)
-
-colnames(molina1) = c("study","cultivar","sev","yld","block","ai","state","year")
-
-ma_c = rbind(ma1,molina1)
-
-ma_c2 <- ma_c |> 
-  filter(!is.na(sev), !is.na(yld)) |>  # Remove NAs corretamente
-  group_by(study,cultivar) |> 
-  summarise(mean_sev = mean(sev),  # Evita problemas com NAs restantes
-            mean_yld = mean(yld))
-
-ma_c2$study = as.factor(ma_c2$study)
-lmer_ts = lmer(mean_yld ~ mean_sev + (1|state), data = ma_c2)
-
-ext_sev_lmer = extend(lmer_ts, along = "mean_sev", n=100)
-
-curve_sev_lmer = powerCurve(ext_sev_lmer, along = "mean_sev", nsim = 40, breaks = 0:100)
-
-curve_sev_lmer2 = as.data.frame(summary(curve_sev_lmer))
-
-cor(simulated_data_lmer$yld,simulated_data_lmer$sev)
-
-estria2 %>% 
-  ggplot(aes(mean_sev))+
-  geom_histogram()
 ```
 
 
@@ -1466,7 +1326,7 @@ price_plot
 
 ## Simulation
 
-```{r}
+```{r,eval = FALSE, echo = TRUE}
 set.seed(1)
 n=40000
 lambda = seq(0,1, by=0.05)
@@ -1537,7 +1397,7 @@ colnames(big_one)  = c("lambda","fun_price","operational_cost","n_aplication","C
                        "b1","b0","sn","sf","soy_price")
 ```
 
-```{r}
+```{r,eval = FALSE, echo = TRUE}
 big_one_df = as.data.frame(big_one) %>% 
   filter(b0>=0) %>% 
   filter(yn>0) %>% 
@@ -1553,10 +1413,12 @@ big_one_df = as.data.frame(big_one) %>%
 
 gc()
 ```
+
 ```{r}
-write_csv(big_one_df,"data/big_one_df.csv")
+#write_csv(big_one_df,"data/big_one_df.csv")
 big_one_df = read_csv("data/big_one_df.csv")
 ```
+
 ```{r}
 sn = big_one_df %>% 
   ggplot(aes(sn))+
@@ -1599,7 +1461,7 @@ gc()
 
 b1_graphic
 ```
-```{r}
+```{r,eval = FALSE, echo = TRUE}
 alpha_graphic = big_one_df %>% 
     filter(C <= 180) %>%
   filter(lambda >= 0.4) %>%
@@ -1619,7 +1481,8 @@ gc()
 alpha_graphic
 
 ```
-```{r}
+
+```{r,eval = FALSE, echo = TRUE}
 #alpha_res_graphic,alpha_m_sus_graphic,alpha_sus_graphic,
 plot_grid(sn_res_graphic,b0_res_graphic,b1_res_graphic, ncol = 3,  labels = c("(a)", "(b)", "(c)"),label_x = -0.03)
 
