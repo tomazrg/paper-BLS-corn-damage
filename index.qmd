@@ -4,6 +4,8 @@ message: false
 warning: false
 ---
 
+## Description
+  
 <img src = "fig/loss.png" width=700 height = 400 align = right>
 This website provides easy access to commented R scripts that allows reproducing the analysis of the data from our publication.
 
