@@ -1,5 +1,7 @@
 ---
-title: "BLS"
+title: ""
+message: false
+warning: false
 ---
 
 This is a Quarto website.
