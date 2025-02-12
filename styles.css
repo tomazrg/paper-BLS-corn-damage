@@ -42,6 +42,12 @@ h1, h2, h3 {
     background-color: #6d560c;
 
 }
+
+navbar {
+    min-height: 50px; /* Reduz a altura da barra */
+    padding: 5px 10px; /* Ajusta o espaçamento interno */
+}
+
 .list-group-item.active {
     z-index: 2;
     color: #ffffff;
