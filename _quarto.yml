@@ -7,9 +7,11 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: "<i class='fas fa-info-circle'></i> About"
+        text: "About"
+        icon: fa fa-home
       - href: about.qmd
-        text: "<i class='fas fa-chart-line'></i> Data Analysis"
+        text: "Data Analysis"
+        icon: fa fa-file-code-o
 
 format:
   html:
