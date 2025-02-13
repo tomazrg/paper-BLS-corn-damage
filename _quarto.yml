@@ -20,11 +20,13 @@ format:
   html:
     theme: flatly
     css: styles.css
+    df-print: paged
     toc: true
     toc_float:
       collapsed: false
       smooth_scroll: false
     lib_dir: site_libs
-    self_contained: false
+    self_contained: true
+bibliography: crossref.bib
+csl: chicago-author-date.csl
 
-editor: visual
