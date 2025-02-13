@@ -1422,7 +1422,7 @@ big_one_df = read_csv("data/big_one_df.csv")
 ```{r}
 sn = big_one_df %>% 
   ggplot(aes(sn))+
-  geom_histogram(color = "white", fill = "steelblue", bins = 10, alpha= .5)+
+  geom_histogram(color = "white", fill = "steelblue", bins = 10)+
   theme(text = element_text(face = "bold", size = 14),
         axis.title = element_text(face = "bold",size = 16))+
   labs(y = "Frequency",
@@ -1431,13 +1431,15 @@ sn = big_one_df %>%
 
 gc()
 
+ggsave("fig/severity_simu.png", dpi = 600, bg = "white", width = 8)
+
 ```
 
 ```{r}
 b0_graphic = big_one_df %>% 
   ggplot(aes(b0))+
-  geom_histogram(color = "white", fill = "steelblue", bins = 10, alpha= .5)+
-   #scale_x_continuous(breaks = c(0,1000,2000,3000,4000,5000,6000,7000), limits = c(0, 7000))+
+  geom_histogram(color = "white", fill = "darkred")+
+   scale_x_continuous(breaks = c(6000,7000,8000,9000,10000,11000,12000,13000), limits = c(6000, 13000))+
   theme(text = element_text(face = "bold", size = 14),
          axis.title = element_text(size = 16, face = "bold"))+
   labs(y = "Frequency",
@@ -1445,12 +1447,14 @@ b0_graphic = big_one_df %>%
   ggthemes::theme_few()
 
 gc()
+
+ggsave("fig/b0_simu.png", dpi = 600, bg = "white", width = 8)
 ```
 ```{r}
 b1_graphic = big_one_df %>% 
   ggplot(aes(b1))+
-  geom_histogram(color = "white", fill = "steelblue", bins = 10, alpha= .5)+
-  #scale_x_continuous(breaks = c(-100,-90,-80,-70,-60,-50,-40,-30,-20,-10,0), limits = c(-100,0))+
+  geom_histogram(color = "white", fill = "darkgreen", bins = 20)+
+  scale_x_continuous(breaks = c(-90,-80,-70,-60,-50,-40,-30), limits = c(-90,-30))+
   theme(text = element_text(face = "bold", size = 14),
          axis.title = element_text(size = 16, face = "bold"))+
   labs(y = "Frequency",
@@ -1460,6 +1464,8 @@ b1_graphic = big_one_df %>%
 gc()
 
 b1_graphic
+
+ggsave("fig/b1_simu.png", dpi = 600, bg = "white", width = 8)
 ```
 ```{r,eval = FALSE, echo = TRUE}
 alpha_graphic = big_one_df %>% 
@@ -1480,6 +1486,17 @@ gc()
 
 alpha_graphic
 
+```
+```{r}
+big_one_df %>% 
+  ggplot(aes(soy_price))+
+  geom_histogram(color = "white", fill = "darkgreen", bins = 20)+
+  #scale_x_continuous(breaks = c(0.04,0.05,0.06,0.07), limits = c(-90,-30))+
+  theme(text = element_text(face = "bold", size = 14),
+         axis.title = element_text(size = 16, face = "bold"))+
+  labs(y = "Frequency",
+       x = "Slope (kg/p.p.)")+
+  ggthemes::theme_few()
 ```
 
 ```{r,eval = FALSE, echo = TRUE}
