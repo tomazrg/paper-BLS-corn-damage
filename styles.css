@@ -37,11 +37,19 @@
 .list-group-item.active {
     z-index: 2;
     color: #ffffff;
-    background-color: #0c406d;
-    border-color: #0c406d;
+    background-color: #3463db;
+    border-color: #3463db;
 }
 
 .page-header {
     text-align: left;  /* Alinha o texto à esquerda */
+}
+
+h1, h2, h3 {
+    font-family: 'Oswald', sans-serif;
+    padding-bottom: 10px;
+    padding-top: 20px;
+    color: #0c466d;
+    margin-left: 5px;  /* Recuo para os títulos */
 }
 
