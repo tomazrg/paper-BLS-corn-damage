@@ -53,6 +53,7 @@ h1, h2, h3 {
 .navbar {
     min-height: 50px;  /* Ajusta a altura da barra */
     padding: 5px 10px;  /* Ajusta o espaçamento interno */
+    margin-left: 20%
 }
 
 .navbar-nav > li > a {
