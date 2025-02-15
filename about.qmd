@@ -1099,7 +1099,7 @@ relative_plot = ggplot() +
                      expand = c(0, 2))+
   coord_cartesian(xlim = c(0,100), ylim = c(20,100))+
   labs(x = "Disease severity (%)", y = "Relative yield (%) ")+
-  geom_hline(yintercept = 87,
+  geom_hline(yintercept = 86,
              linetype = 2, color = "darkblue", size = 1)+
   geom_vline(xintercept = c(25), linetype = 2, color = "darkblue", size = 1)+
   ggthemes::theme_few()+
@@ -1108,7 +1108,12 @@ relative_plot = ggplot() +
         axis.text.y = element_text(size = 10, face = "bold"))
 ```
 ```{r}
+	
+df2
 
+9691.0 * 0.14 # Relative yield of 86% (mean)
+9691.0 * 0.30 # Relative yield of 70% (lower)
+9691.0 * 0.48 # Sev = 100
 ```
 
 ```{r}
@@ -1664,5 +1669,66 @@ library(cowplot)
 
 ggsave("fig/break-even_gain.png", dpi = 600, bg = "white",
        width = 8, height = 6)
+```
+# Weather
+```{r}
+weather = gsheet2tbl("https://docs.google.com/spreadsheets/d/1Pceiruz6-WiH9G39mFzm2xiBDSZCNuqvWLvLJ9C73G0/edit?usp=sharing")
+
+weather$trial = as.factor(weather$trial)
+```
+
+```{r}
+library(janitor)
+library(nasapower)
+library(dplyr) # Para mutate
+
+# Criar um dataframe vazio para armazenar os dados climáticos
+box <- data.frame()
+
+# Loop para extrair dados climáticos para cada estudo
+for(i in 1:nrow(weather)) {
+  
+  # Certificar que as datas estão no formato correto
+  sowing_date <- as.Date(weather$sowing[i])
+  harvest_date <- as.Date(weather$harvest[i])
+  
+  # Obter os dados climáticos usando nasapower
+  lil_nasa <- get_power(
+    community = "ag",
+    temporal_api = "daily",
+    dates = c(sowing_date, harvest_date), # Usa as datas diretamente do dataframe
+    lonlat = c(weather$lon[i], weather$lat[i]), # Longitude e Latitude
+    pars = c("T2M", "RH2M", "PRECTOTCORR", "T2M_MAX", "T2M_MIN", "T2MDEW") # Parâmetros desejados
+  ) %>%
+    mutate(study = weather$trial[i]) # Adiciona a identificação do estudo
+
+  # Combina os dados atuais com os anteriores
+  box <- bind_rows(box, lil_nasa)
+}
+
+
+```
+
+```{r}
+write_xlsx(box,"data/weather_data.xlsx")
+```
+
+```{r}
+box %>% 
+  group_by(study) %>% 
+  summarise(
+    T2M = mean(T2M),
+    RH2M = mean(RH2M),
+    RAIN = sum(PRECTOTCORR)
+  )
+```
+
+```{r}
+box %>% 
+  summarise(
+    T2M = mean(T2M),
+    RH2M = mean(RH2M),
+    RAIN = sum(PRECTOTCORR)/3
+  )
 ```
 
