@@ -4,7 +4,13 @@ message: false
 warning: false
 ---
 
+
+
+
 # Packages
+
+
+
 
 ```{r}
 library(tidyverse)
@@ -20,16 +26,28 @@ library(ggdist)
 library(simdata)
 ```
 
+
+
+
 # Importation
+
+
+
 
 ```{r}
 gls = gsheet2tbl("https://docs.google.com/spreadsheets/d/1TC_-I7OpUloaqh5sd3mVu8YW-V1Lxk8SZ_DRCIUmWOE/edit?usp=sharing")
 
 ```
 
+
+
+
 # Descriptive analysis
 
 ## Severity
+
+
+
 
 ```{r}
 
@@ -45,7 +63,13 @@ plot_sev = gls %>%
 
 ```
 
+
+
+
 ## Yield
+
+
+
 
 ```{r}
 yy = gls %>% 
@@ -85,7 +109,13 @@ ggsave("fig/sev_yld.png", bg = "white", dpi = 600,
 
 ```
 
+
+
+
 ## Prepare data
+
+
+
 
 ```{r}
 estria2 <- gls |> 
@@ -107,7 +137,13 @@ median(estria2$mean_yld)
 sd(estria2$mean_yld)
 ```
 
+
+
+
 ## Visualize
+
+
+
 
 ```{r}
 
@@ -310,9 +346,15 @@ combined_plot
 ggsave("fig/plot_all.png", bg = "white", width = 10, height = 8)
 ```
 
+
+
+
 # Modeling
 
 ### Fitting
+
+
+
 
 ```{r}
 library(lme4)
@@ -409,7 +451,13 @@ print(simu_residual_sd_lmer)
 
 ```
 
+
+
+
 ## Plotting
+
+
+
 
 ```{r}
 library(broom)
@@ -508,7 +556,13 @@ lmer_plot = simulated_data_lmer|>
 lmer_plot
 ```
 
+
+
+
 ## Joining
+
+
+
 
 ```{r}
 
@@ -525,9 +579,15 @@ cor(estria2$mean_sev, estria2$mean_yld)
 cor(simulated_data_lmer$sev, simulated_data_lmer$yld)
 ```
 
+
+
+
 # Performance
 
 ### Empirical
+
+
+
 
 ```{r}
 
@@ -550,7 +610,13 @@ performance::check_autocorrelation(obs_model_lmer)
 
 ```
 
+
+
+
 ### Simulated
+
+
+
 
 ```{r}
 
@@ -572,9 +638,15 @@ performance::check_heteroscedasticity(simu_model_lmer)
 performance::check_autocorrelation(simu_model_lmer)
 ```
 
+
+
+
 ## Visualization
 
 #### Simulated
+
+
+
 
 ```{r}
 
@@ -672,7 +744,13 @@ lmer_pd_ob
 max(lmer_prediction_data$predicted)
 ```
 
+
+
+
 #### Observed
+
+
+
 
 ```{r}
 
@@ -769,7 +847,13 @@ obs_lmer_pd_ob = obs_lmer_prediction_data %>%
 obs_lmer_pd_ob
 ```
 
+
+
+
 #### Plotting
+
+
+
 
 ```{r}
 #plot_grid(obs_lmer_pd_ob,lmer_pd_ob,
@@ -789,9 +873,15 @@ obs_lmer_pd_ob
 ggsave("fig/lmm_residue.png", dpi = 600, bg = "white", height = 6, width = 8)
 ```
 
+
+
+
 # Power analysis of model by simulation
 
 ### Overall
+
+
+
 
 ```{r,eval = FALSE, echo = TRUE}
 library(simr)
@@ -838,7 +928,13 @@ power_df %>%
   filter(mean >= 0.80 & mean <=0.85)
 ```
 
+
+
+
 #### Plotting
+
+
+
 
 ```{r}
 ggplot() +
@@ -868,7 +964,13 @@ ggplot() +
 ggsave("fig/power_model.png", bg = "white", dpi = 600,width = 6, height = 4)
 ```
 
+
+
+
 ## By trial
+
+
+
 
 ```{r}
 
@@ -930,9 +1032,15 @@ write_xlsx(power4_df,"data/trial4_power.xlsx")
 
 ```
 
+
+
+
 # Damage
 
 ## Economic losses
+
+
+
 
 ```{r}
 
@@ -1070,7 +1178,13 @@ max(loss_25)
        dpi = 600,height =8, width = 16)
 ```
 
+
+
+
 ## Relative yield
+
+
+
 
 ```{r}
 
@@ -1200,11 +1314,17 @@ ggsave("fig/relative_parameters.png", bg = "white", dpi = 600,
 
 ```
 
+
+
+
 # Break-even probability
 
 ## Framework simulation
 
 ### NORTA function
+
+
+
 
 ```{r}
 gera.norm.bid.geral<-function(tamanho.amostra,correlacao,m1,m2,sigma1,sigma2)
@@ -1229,7 +1349,13 @@ estria2 %>%
   ggthemes::theme_few()
 ```
 
+
+
+
 ### Severity
+
+
+
 
 ```{r}
 
@@ -1254,7 +1380,13 @@ plot(x_sev,Fx_sev)
 curve(pbeta(x, 1.2041125,3.6414300),0,1, add = T)
 ```
 
+
+
+
 ### Intercept
+
+
+
 
 ```{r}
 
@@ -1276,7 +1408,13 @@ x_res_b0= environment(ecdf(intercept_bls$Intercept))$x
 ks.test(Fx_res_b0, pnorm(x_res_b0, mean(intercept_bls$Intercept), sd(intercept_bls$Intercept)))
 ```
 
+
+
+
 ### Slope
+
+
+
 
 ```{r}
 slope_bls = regression_trial_m
@@ -1320,7 +1458,13 @@ j_res<-gera.norm.bid.geral(10000,0.15,0,0,1,1)
 plot(j_res[,1],j_res[,2])
 ```
 
+
+
+
 ### Corn price
+
+
+
 
 ```{r}
 corn = gsheet2tbl("https://docs.google.com/spreadsheets/d/1LcLVKb6bW7tVaiu6reLsT8sjFR1hwUcembZ7uxAoBP8/edit?usp=sharing") 
@@ -1380,7 +1524,13 @@ median(bls_price$price)
 shapiro.test(bls_price$price)
 ```
 
+
+
+
 #### Kolmogorov-Smirnov Test
+
+
+
 
 ```{r}
 Fx = environment(ecdf(bls_price$price))$y
@@ -1392,7 +1542,13 @@ ks.test(Fx, pnorm(x, mean(bls_price$price), sd(bls_price$price)))
 plot(Fx, pnorm(x, mean(bls_price$price), sd(bls_price$price)))
 ```
 
+
+
+
 #### Vizualization
+
+
+
 
 ```{r}
 price_plot = bls_price %>% 
@@ -1411,7 +1567,13 @@ price_plot
        dpi = 600, height = 5, width = 6)
 ```
 
+
+
+
 ## Simulation
+
+
+
 
 ```{r,eval = FALSE, echo = TRUE}
 set.seed(1)
@@ -1754,7 +1916,13 @@ ggsave("fig/break-even_gain.png", dpi = 600, bg = "white",
        width = 8, height = 6)
 ```
 
+
+
+
 # Weather
+
+
+
 
 ```{r}
 weather = gsheet2tbl("https://docs.google.com/spreadsheets/d/1Pceiruz6-WiH9G39mFzm2xiBDSZCNuqvWLvLJ9C73G0/edit?usp=sharing")
@@ -1816,3 +1984,4 @@ box %>%
     RAIN = sum(PRECTOTCORR)/3
   )
 ```
+
